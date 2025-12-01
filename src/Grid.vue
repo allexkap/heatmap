@@ -1,0 +1,76 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import Cell from "./Cell.vue";
+import type { GridConfig } from "./types";
+
+const { values } = defineProps<{
+  values: number[][];
+}>();
+
+let grid_config = ref<GridConfig>({
+  hue: 120,
+  gap: 4,
+  size: 40,
+  radius: 20,
+});
+</script>
+
+<template>
+  <div class="control-row">
+    <input type="range" min="10" max="200" v-model="grid_config.size" />
+    {{ grid_config.size }}
+  </div>
+  <div class="control-row">
+    <input type="range" min="0" max="360" v-model="grid_config.hue" />
+    {{ grid_config.hue }}
+  </div>
+  <div class="control-row">
+    <input type="range" min="0" max="40" v-model="grid_config.gap" />
+    {{ grid_config.gap }}
+  </div>
+  <div class="control-row">
+    <input type="range" min="0" max="50" v-model="grid_config.radius" />
+    {{ grid_config.radius }}
+  </div>
+
+  <div class="wrapper">
+    <div class="grid" :style="{ gap: `${grid_config.gap}px` }">
+      <div
+        v-for="(row, y) in values"
+        class="grid-row"
+        :style="{ gap: `${grid_config.gap}px` }"
+      >
+        <Cell
+          v-for="(saturation, x) in row"
+          :date="`x=${x} y=${y}`"
+          :saturation
+          :hue="grid_config.hue"
+          :size="grid_config.size"
+          :radius="grid_config.radius"
+        ></Cell>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.wrapper {
+  overflow-x: auto;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  min-width: max-content;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+</style>
