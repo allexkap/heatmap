@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Cell from "./Cell.vue";
-import type { GridConfig } from "./types";
+import { type GridConfig } from "./types";
+import Config from "./Config.vue";
 
 const { values } = defineProps<{
   values: number[][];
@@ -16,23 +17,7 @@ let grid_config = ref<GridConfig>({
 </script>
 
 <template>
-  <div class="control-row">
-    <input type="range" min="10" max="200" v-model="grid_config.size" />
-    {{ grid_config.size }}
-  </div>
-  <div class="control-row">
-    <input type="range" min="0" max="360" v-model="grid_config.hue" />
-    {{ grid_config.hue }}
-  </div>
-  <div class="control-row">
-    <input type="range" min="0" max="40" v-model="grid_config.gap" />
-    {{ grid_config.gap }}
-  </div>
-  <div class="control-row">
-    <input type="range" min="0" max="50" v-model="grid_config.radius" />
-    {{ grid_config.radius }}
-  </div>
-
+  <Config v-model:config="grid_config"></Config>
   <div class="wrapper">
     <div class="grid" :style="{ gap: `${grid_config.gap}px` }">
       <div

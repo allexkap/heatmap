@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Grid from "./Grid.vue";
+import Loader from "./Loader.vue";
 
 let values = generateRandomArray(7, 40);
 
@@ -11,6 +12,7 @@ function generateRandomArray(rows: number, cols: number): number[][] {
 </script>
 
 <template>
+  <Loader></Loader>
   <Grid :values></Grid>
 </template>
 
