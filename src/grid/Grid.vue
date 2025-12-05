@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
+import { type GridConfigType } from "./GridConfig.vue";
+
 import Cell from "./Cell.vue";
-import { type GridConfig } from "./GridConfig.vue";
 import Config from "./GridConfig.vue";
 
 const { values } = defineProps<{
   values: number[][];
+  grid_config: GridConfigType;
 }>();
-
-let grid_config = ref<GridConfig>({
-  hue: 120,
-  gap: 4,
-  size: 40,
-  radius: 20,
-});
 </script>
 
 <template>

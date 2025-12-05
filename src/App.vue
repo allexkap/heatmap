@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import { createGridConfig } from "./grid/GridConfig.vue";
+
 import Grid from "./grid/Grid.vue";
 import Loader from "./loader/Loader.vue";
-
 import Config from "./config/Config.vue";
 import Stats from "./stats/Stats.vue";
+import GridConfig from "./grid/GridConfig.vue";
 
 let values = generateRandomArray(7, 40);
 
@@ -14,6 +16,8 @@ function generateRandomArray(rows: number, cols: number): number[][] {
     Array.from({ length: cols }, () => Math.random())
   );
 }
+
+let grid_config = ref(createGridConfig());
 </script>
 
 <template>
@@ -21,8 +25,9 @@ function generateRandomArray(rows: number, cols: number): number[][] {
     <div class="row">
       <Loader class="area"></Loader>
       <Config class="area"></Config>
+      <GridConfig :config="grid_config" class="area"></GridConfig>
     </div>
-    <Grid class="area" :values></Grid>
+    <Grid class="area" :values :grid_config></Grid>
     <Stats class="area"></Stats>
   </div>
 </template>

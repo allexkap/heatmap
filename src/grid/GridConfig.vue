@@ -1,32 +1,45 @@
-<script setup lang="ts">
-export interface GridConfig {
+<script lang="ts">
+export interface GridConfigType {
   hue: number;
   gap: number;
   size: number;
   radius: number;
 }
 
+export function createGridConfig(
+  config?: Partial<GridConfigType>
+): GridConfigType {
+  return {
+    hue: 120,
+    gap: 4,
+    size: 40,
+    radius: 20,
+    ...config,
+  };
+}
+</script>
+
+<script setup lang="ts">
 const { config } = defineProps<{
-  config: GridConfig;
+  config: GridConfigType;
 }>();
 </script>
 
 <template>
-  <div class="config">
-    Config Area:
-    <div class="control-row">
+  <div class>
+    <div>
       <input type="range" min="10" max="200" v-model="config.size" />
       {{ config.size }}
     </div>
-    <div class="control-row">
+    <div>
       <input type="range" min="0" max="360" v-model="config.hue" />
       {{ config.hue }}
     </div>
-    <div class="control-row">
+    <div>
       <input type="range" min="0" max="40" v-model="config.gap" />
       {{ config.gap }}
     </div>
-    <div class="control-row">
+    <div>
       <input type="range" min="0" max="50" v-model="config.radius" />
       {{ config.radius }}
     </div>
