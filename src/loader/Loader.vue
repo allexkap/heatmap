@@ -2,6 +2,11 @@
 import { computed, ref } from "vue";
 
 import { loadersRegistry } from "./subloaders";
+import type { GridData } from "@/types";
+
+const emit = defineEmits<{
+  (e: "update:grid_data", id: GridData): void;
+}>();
 
 const loaders = loadersRegistry;
 let selectedLoaderIndex = ref(0);
@@ -19,7 +24,10 @@ let selectedLoader = computed(() => loaders[selectedLoaderIndex.value]);
       </select>
     </div>
     <div v-if="selectedLoader" class="container">
-      <component :is="selectedLoader.component" />
+      <component
+        :is="selectedLoader.component"
+        @update:grid_data="$emit('update:grid_data', $event)"
+      />
     </div>
   </div>
 </template>

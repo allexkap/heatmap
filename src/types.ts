@@ -1,5 +1,5 @@
 
-export interface JsonData {
+export interface GridData {
     meta: {
         step: "hour" | "day";
         min_value?: number;
@@ -8,7 +8,7 @@ export interface JsonData {
     content: Record<number, number>;    // unix_timestamp: value
 }
 
-export function isJsonData(data: unknown): data is JsonData {
+export function isGridData(data: unknown): data is GridData {
     if (typeof data !== 'object' || data === null) return false;
 
     const obj = data as Record<string, unknown>;

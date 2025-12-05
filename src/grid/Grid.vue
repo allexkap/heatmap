@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
 import { type GridConfigType } from "./GridConfig.vue";
 
 import Cell from "./Cell.vue";
-import Config from "./GridConfig.vue";
 
 const { values } = defineProps<{
   values: number[][];

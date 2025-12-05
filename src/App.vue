@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import { type GridData } from "./types";
 import { createGridConfig } from "./grid/GridConfig.vue";
 
 import Grid from "./grid/Grid.vue";
@@ -10,6 +11,7 @@ import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
 
 let values = generateRandomArray(7, 40);
+let grid_data = ref<GridData>();
 
 function generateRandomArray(rows: number, cols: number): number[][] {
   return Array.from({ length: rows }, () =>
@@ -23,12 +25,13 @@ let grid_config = ref(createGridConfig());
 <template>
   <div class="app">
     <div class="row">
-      <Loader class="area"></Loader>
+      <Loader @update:grid_data="grid_data = $event" class="area"></Loader>
       <Config class="area"></Config>
       <GridConfig :config="grid_config" class="area"></GridConfig>
     </div>
     <Grid class="area" :values :grid_config></Grid>
     <Stats class="area"></Stats>
+    {{ grid_data }}
   </div>
 </template>
 
