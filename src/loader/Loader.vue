@@ -1,29 +1,25 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { isJsonData, type JsonData } from "../types";
+import { computed, ref } from "vue";
+import { loadersRegistry } from "./subloaders";
 
-const jsonContent = ref<JsonData>();
-
-function handleFileUpload(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target?.result as string) as unknown;
-      if (!isJsonData(data)) throw new Error("Invalid JSON file");
-      jsonContent.value = data;
-    } catch (error) {
-      alert(error);
-    }
-  };
-  reader.readAsText(file);
-}
+const loaders = loadersRegistry;
+let selectedLoaderIndex = ref(0);
+let selectedLoader = computed(() => loaders[selectedLoaderIndex.value]);
 </script>
 
 <template>
   <div>
-    <input type="file" @change="handleFileUpload" accept=".json" />
+    <div class="selector">
+      <label for="select">Select loader: </label>
+      <select id="select" v-model="selectedLoaderIndex">
+        <option v-for="(loader, i) in loaders" :value="i">
+          {{ loader.displayName }}
+        </option>
+      </select>
+    </div>
+    <div v-if="selectedLoader" class="container">
+      <component :is="selectedLoader.component" />
+    </div>
   </div>
 </template>
 

@@ -37,10 +37,10 @@ flowchart TB
  end
 
  subgraph loader
- Loader --> parsers
-  subgraph parsers
-   DefaultParser
-   DeckParser
+ Loader --> loaders
+  subgraph loaders
+   DefaultLoader
+   DeckLoader
   end
  end
 
