@@ -1,9 +1,3 @@
-export interface GridConfig {
-    hue: number,
-    gap: number,
-    size: number,
-    radius: number
-}
 
 export interface JsonData {
     meta: {
@@ -11,7 +5,7 @@ export interface JsonData {
         min_value?: number;
         max_value?: number;
     };
-    content: Record<number, number>;
+    content: Record<number, number>;    // unix_timestamp: value
 }
 
 export function isJsonData(data: unknown): data is JsonData {

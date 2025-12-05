@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Cell from "./Cell.vue";
-import { type GridConfig } from "./types";
-import Config from "./Config.vue";
+import { type GridConfig } from "./GridConfig.vue";
+import Config from "./GridConfig.vue";
 
 const { values } = defineProps<{
   values: number[][];
@@ -17,7 +17,6 @@ let grid_config = ref<GridConfig>({
 </script>
 
 <template>
-  <Config v-model:config="grid_config"></Config>
   <div class="wrapper">
     <div class="grid" :style="{ gap: `${grid_config.gap}px` }">
       <div

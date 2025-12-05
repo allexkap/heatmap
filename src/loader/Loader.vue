@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { isJsonData, type JsonData } from "./types";
+import { isJsonData, type JsonData } from "../types";
 
 const jsonContent = ref<JsonData>();
 
@@ -22,8 +22,9 @@ function handleFileUpload(event: Event) {
 </script>
 
 <template>
-  <div>Loader area:</div>
-  <input type="file" @change="handleFileUpload" accept=".json" />
+  <div>
+    <input type="file" @change="handleFileUpload" accept=".json" />
+  </div>
 </template>
 
 <style scoped></style>

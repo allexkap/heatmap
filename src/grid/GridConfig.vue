@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { type GridConfig } from "./types";
+export interface GridConfig {
+  hue: number;
+  gap: number;
+  size: number;
+  radius: number;
+}
 
 const { config } = defineProps<{
   config: GridConfig;
