@@ -10,15 +10,7 @@ import Config from "./config/Config.vue";
 import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
 
-let values = generateRandomArray(7, 40);
 let grid_data = ref<GridData>();
-
-function generateRandomArray(rows: number, cols: number): number[][] {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => Math.random())
-  );
-}
-
 let grid_config = ref(createGridConfig());
 </script>
 
@@ -29,9 +21,8 @@ let grid_config = ref(createGridConfig());
       <Config class="area"></Config>
       <GridConfig :config="grid_config" class="area"></GridConfig>
     </div>
-    <Grid class="area" :values :grid_config></Grid>
+    <Grid class="area" :grid_data :grid_config></Grid>
     <Stats class="area"></Stats>
-    {{ grid_data }}
   </div>
 </template>
 
