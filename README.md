@@ -24,20 +24,15 @@ npm run build
 
 ```mermaid
 flowchart TB
- App --> Config & Grid & Loader & Stats
- App -.-> GridConfig
-
- subgraph config
-  Config
- end
+ App --> Loader & Grid & GridConfig & Stats
 
  subgraph grid
   Grid --> Cell
-  Grid & Cell --> GridConfig
+  GridConfig
  end
 
  subgraph loader
- Loader --> loaders
+  Loader --> loaders
   subgraph loaders
    DefaultLoader
    DeckLoader
@@ -46,5 +41,10 @@ flowchart TB
 
  subgraph stats
   Stats
+ end
+
+ App & loaders & Grid & GridConfig & Stats -.- GridData
+ subgraph types.ts
+  GridData
  end
 ```

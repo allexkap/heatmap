@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { type GridConfigType } from "./GridConfig.vue";
-
 import Cell from "./Cell.vue";
-import type { GridData } from "@/types";
+import type { GridData, GridParams } from "@/types";
+
 import { ref } from "vue";
 
 const { grid_data } = defineProps<{
   grid_data?: GridData;
-  grid_config: GridConfigType;
+  grid_params: GridParams;
 }>();
+
+let grid_config = ref({
+  hue: 120,
+  gap: 4,
+  size: 40,
+  radius: 20,
+});
 
 function generateRandomArray(rows: number, cols: number): number[][] {
   return Array.from({ length: rows }, () =>

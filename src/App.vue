@@ -1,27 +1,24 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import { type GridData } from "./types";
-import { createGridConfig } from "./grid/GridConfig.vue";
+import { type GridData, type GridParams } from "./types";
 
 import Grid from "./grid/Grid.vue";
 import Loader from "./loader/Loader.vue";
-import Config from "./config/Config.vue";
 import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
 
 let grid_data = ref<GridData>();
-let grid_config = ref(createGridConfig());
+let grid_params = ref<GridParams>({ start_ts: 0, end_ts: 0, offset: 0 });
 </script>
 
 <template>
   <div class="app">
     <div class="row">
       <Loader @update:grid_data="grid_data = $event" class="area"></Loader>
-      <Config class="area"></Config>
-      <GridConfig :config="grid_config" class="area"></GridConfig>
+      <GridConfig :params="grid_params" class="area"></GridConfig>
     </div>
-    <Grid class="area" :grid_data :grid_config></Grid>
+    <Grid class="area" :grid_data :grid_params></Grid>
     <Stats class="area"></Stats>
   </div>
 </template>
