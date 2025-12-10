@@ -5,22 +5,25 @@ import type { GridData, GridParams } from "@/types";
 import { ref } from "vue";
 
 const { grid_data } = defineProps<{
-  grid_data?: GridData;
+  grid_data: GridData | null;
   grid_params: GridParams;
 }>();
-
-let grid_config = ref({
-  hue: 120,
-  gap: 4,
-  size: 40,
-  radius: 20,
-});
 
 function generateRandomArray(rows: number, cols: number): number[][] {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => Math.random())
   );
 }
+
+let values = ref(generateRandomArray(7, 40));
+
+// todo
+const grid_config = ref({
+  hue: 120,
+  gap: 4,
+  size: 40,
+  radius: 20,
+});
 
 let demo: number | null = null;
 demo = setInterval(() => {
@@ -31,8 +34,6 @@ demo = setInterval(() => {
     values.value = generateRandomArray(7, 40);
   }
 }, 500);
-
-let values = ref(generateRandomArray(7, 40));
 </script>
 
 <template>
@@ -54,7 +55,6 @@ let values = ref(generateRandomArray(7, 40));
         ></Cell>
       </div>
     </div>
-    {{ grid_data }}
   </div>
 </template>
 

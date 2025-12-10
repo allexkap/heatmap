@@ -10,6 +10,7 @@ export type GridParams = {
   start_ts: number;
   end_ts: number;
   offset: number;
+  selected_entry: string | null;
 };
 
 export type GridData = {

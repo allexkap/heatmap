@@ -8,18 +8,32 @@ import Loader from "./loader/Loader.vue";
 import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
 
-let grid_data = ref<GridData>();
-let grid_params = ref<GridParams>({ start_ts: 0, end_ts: 0, offset: 0 });
+function getYearRange(): [number, number] {
+  let now = new Date();
+  let year_ago = new Date(now);
+  year_ago.setFullYear(now.getFullYear() - 1);
+  return [year_ago.getTime() / 1000, now.getTime() / 1000];
+}
+
+let [start_ts, end_ts] = getYearRange();
+
+let grid_data = ref<GridData | null>(null);
+let grid_params = ref<GridParams>({
+  start_ts: start_ts,
+  end_ts: end_ts,
+  offset: 0,
+  selected_entry: null,
+});
 </script>
 
 <template>
   <div class="app">
     <div class="row">
       <Loader @update:grid_data="grid_data = $event" class="area"></Loader>
-      <GridConfig :params="grid_params" class="area"></GridConfig>
+      <GridConfig :grid_data :grid_params class="area"></GridConfig>
     </div>
     <Grid class="area" :grid_data :grid_params></Grid>
-    <Stats class="area"></Stats>
+    <Stats class="area" :grid_data :grid_params></Stats>
   </div>
 </template>
 
