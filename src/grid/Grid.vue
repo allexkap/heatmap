@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Cell from "./Cell.vue";
-import type { GridData, GridParams } from "@/types";
+import type { CellConfig, GridData, GridParams } from "@/types";
 
 import { ref } from "vue";
 
@@ -18,12 +18,13 @@ function generateRandomArray(rows: number, cols: number): number[][] {
 let values = ref(generateRandomArray(7, 40));
 
 // todo
-const grid_config = ref({
-  hue: 120,
-  gap: 4,
+let grid_config = { gap: 4 };
+const cell_config: CellConfig = {
   size: 40,
   radius: 20,
-});
+  colors: ["#333", "#0f0"],
+  interpolation_method: "srgb",
+};
 
 let demo: number | null = null;
 demo = setInterval(() => {
@@ -45,13 +46,11 @@ demo = setInterval(() => {
         :style="{ gap: `${grid_config.gap}px` }"
       >
         <Cell
-          v-for="(saturation, x) in row"
-          :date="`x=${x} y=${y}`"
-          :saturation
-          :hue="grid_config.hue"
-          :size="grid_config.size"
-          :radius="grid_config.radius"
           class="cell"
+          v-for="(value, x) in row"
+          :tooltip="`x=${x} y=${y}`"
+          :value
+          :config="cell_config"
         ></Cell>
       </div>
     </div>

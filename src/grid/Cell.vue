@@ -1,32 +1,35 @@
 <script setup lang="ts">
-const {
-  date,
-  saturation,
-  hue = 120,
-  size = 10,
-  radius = 20,
-} = defineProps<{
-  date: string;
-  saturation: number;
-  hue?: number;
-  size?: number;
-  radius?: number;
+import type { CellConfig, CellValue } from "@/types";
+
+const { value, tooltip, config } = defineProps<{
+  value: CellValue;
+  tooltip: string;
+  config: CellConfig;
 }>();
 
 function getColor() {
-  return `hsl(${hue}, ${saturation * 100}%, 50%)`;
+  if (Number.isNaN(value) || value == "disabled") return "transparent";
+
+  if (value == "future") return "red";
+
+  return `color-mix(
+    in ${config.interpolation_method},
+    ${config.colors[0]} ${100 * (1 - value)}%,
+    ${config.colors[1]} ${100 * value}%
+  )`;
 }
 </script>
 
 <template>
   <div
+    class="cell"
+    :title="tooltip"
     :style="{
-      width: `${size}px`,
-      height: `${size}px`,
+      width: config.size + 'px',
+      height: config.size + 'px',
+      borderRadius: config.radius + '%',
       backgroundColor: getColor(),
-      borderRadius: `${radius}%`,
     }"
-    :title="date"
   ></div>
 </template>
 

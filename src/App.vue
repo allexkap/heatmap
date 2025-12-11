@@ -8,11 +8,13 @@ import Loader from "./loader/Loader.vue";
 import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
 
-function getYearRange(): [number, number] {
+function getYearRange(): [Date, Date] {
   let now = new Date();
+  now.setHours(0, 0, 0, 0);
   let year_ago = new Date(now);
   year_ago.setFullYear(now.getFullYear() - 1);
-  return [year_ago.getTime() / 1000, now.getTime() / 1000];
+  year_ago.setDate(year_ago.getDate() + 1);
+  return [year_ago, now];
 }
 
 let [start_ts, end_ts] = getYearRange();
@@ -21,7 +23,7 @@ let grid_data = ref<GridData | null>(null);
 let grid_params = ref<GridParams>({
   start_ts: start_ts,
   end_ts: end_ts,
-  offset: 0,
+  offset_seconds: 0,
   selected_entry: null,
 });
 </script>
@@ -39,8 +41,8 @@ let grid_params = ref<GridParams>({
 
 <style scoped>
 :global(body) {
-  background-color: #1f1f1f;
-  color: #ffffff;
+  background-color: #222;
+  color: #fff;
   font-family: sans-serif;
 }
 

@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import type { GridData, GridParams } from "@/types";
+import { computed } from "vue";
 
 const { grid_data, grid_params } = defineProps<{
   grid_data: GridData | null;
   grid_params: GridParams;
 }>();
+
+const days = computed(() => {
+  return (
+    (grid_params.end_ts.getTime() - grid_params.start_ts.getTime()) /
+      (1000 * 60 * 60 * 24) +
+    1
+  );
+});
 </script>
 
 <template>
   <div>
     <p>
       Total range:
-      {{ (grid_params.end_ts - grid_params.start_ts) / 60 / 60 / 24 }} day(s)
+      {{ days }} day(s)
     </p>
     <div>
       Debug:

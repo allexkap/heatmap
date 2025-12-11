@@ -11,16 +11,6 @@ const { grid_data, grid_params } = defineProps<{
   grid_params: GridParams;
 }>();
 
-const date = ref<[Date, Date]>([
-  new Date(grid_params.start_ts * 1000),
-  new Date(grid_params.end_ts * 1000),
-]);
-watchEffect(() => {
-  if (!date.value || date.value.length !== 2) return;
-  grid_params.start_ts = date.value[0].getTime() / 1000;
-  grid_params.end_ts = date.value[1].getTime() / 1000;
-});
-
 let is_multiple_choice = computed(() => {
   return grid_data !== null && Object.keys(grid_data.content).length > 1;
 });
@@ -36,7 +26,13 @@ watchEffect(() => {
 <template>
   <div>
     <VueDatePicker
-      v-model="date"
+      :model-value="[grid_params.start_ts, grid_params.end_ts]"
+      @update:model-value="
+        ([start, end]) => {
+          grid_params.start_ts = start;
+          grid_params.end_ts = end;
+        }
+      "
       :range="{ partialRange: false }"
       :time-config="{ enableTimePicker: false }"
     ></VueDatePicker>

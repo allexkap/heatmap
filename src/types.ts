@@ -1,3 +1,19 @@
+export type CellValue = "disabled" | "future" | number;
+
+export type CellConfig = {
+  size: number;
+  radius: number;
+  colors: [string, string];
+  interpolation_method: string;
+};
+
+export type GridParams = {
+  start_ts: Date;
+  end_ts: Date;
+  offset_seconds: number;
+  selected_entry: string | null;
+};
+
 export type GridMeta = {
   step: "hour" | "day";
   min_value?: number;
@@ -5,13 +21,6 @@ export type GridMeta = {
 };
 
 export type GridContent = Record<number, number>; // unix_timestamp: value
-
-export type GridParams = {
-  start_ts: number;
-  end_ts: number;
-  offset: number;
-  selected_entry: string | null;
-};
 
 export type GridData = {
   meta: GridMeta;
