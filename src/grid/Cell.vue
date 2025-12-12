@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { CellConfig, CellValue } from "@/types";
 
-const { value, tooltip, config } = defineProps<{
-  value: CellValue;
-  tooltip: string;
+const { config, value = NaN } = defineProps<{
   config: CellConfig;
+  value?: CellValue;
+  tooltip?: string;
+  text?: string;
 }>();
 
 function getColor() {
@@ -30,7 +31,9 @@ function getColor() {
       borderRadius: config.radius + '%',
       backgroundColor: getColor(),
     }"
-  ></div>
+  >
+    <slot></slot>
+  </div>
 </template>
 
 <style scoped></style>

@@ -37,7 +37,7 @@ function getPosByDate(date: Date | number, start: Date): [number, number] {
 function loadValues(
   grid_data: GridData | null,
   grid_params: GridParams
-): number[][] | null {
+): number[][] {
   const [total_weeks, last_week_len] = getPosByDate(
     grid_params.end_ts,
     grid_params.start_ts
@@ -79,17 +79,23 @@ let values = computed(() => loadValues(grid_data, grid_params));
 
 <template>
   <div class="wrapper">
-    <div class="grid" :style="{ gap: `${grid_config.gap}px` }">
-      <div
-        v-for="(row, y) in values"
-        class="grid-row"
-        :style="{ gap: `${grid_config.gap}px` }"
-      >
+    <div class="grid">
+      <div class="grid-row header">
+        <Cell
+          v-for="i in (values[0]?.length ?? 0) + 1"
+          class="cell"
+          :config="cell_config"
+        >
+          <template v-if="i > 1">{{ i - 2 }}</template>
+        </Cell>
+      </div>
+      <div v-for="(row, y) in values" class="grid-row">
+        <Cell class="cell" :config="cell_config">{{ "MTWTFSS"[y] }}</Cell>
         <Cell
           class="cell"
           v-for="(value, x) in row"
-          :tooltip="`x=${x} y=${y}`"
           :value="value ?? NaN"
+          :tooltip="`x=${x} y=${y}`"
           :config="cell_config"
         ></Cell>
       </div>
@@ -106,10 +112,12 @@ let values = computed(() => loadValues(grid_data, grid_params));
   display: flex;
   flex-direction: column;
   min-width: max-content;
+  gap: calc(v-bind("grid_config.gap") * 1px);
 }
 
 .grid-row {
   display: flex;
+  gap: calc(v-bind("grid_config.gap") * 1px);
 }
 
 .control-row {
@@ -118,6 +126,9 @@ let values = computed(() => loadValues(grid_data, grid_params));
   gap: 10px;
 }
 .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition-property: background-color;
   transition-duration: 1000ms;
 }
