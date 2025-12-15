@@ -22,6 +22,9 @@ const days = computed(() => {
       Total range:
       {{ days }} day(s)
     </p>
+    <p v-if="grid_params.selected_entry">
+      Selected entry: {{ grid_params.selected_entry }}
+    </p>
     <div>
       Debug:
       <details>

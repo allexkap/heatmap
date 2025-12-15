@@ -23,6 +23,15 @@ const cell_config: CellConfig = {
   interpolation_method: "srgb",
 };
 
+function normalize2d(arr: number[][], min?: number, max?: number): number[][] {
+  const flat_arr = arr.flat().filter((value) => !Number.isNaN(value));
+  if (min === undefined) min = Math.min(...flat_arr);
+  if (max === undefined) max = Math.max(...flat_arr);
+  const range = max - min;
+  if (range === 0) return arr.map((row) => row.map(() => 0));
+  return arr.map((row) => row.map((value) => (value - min) / range));
+}
+
 function getDay(date: Date): number {
   return (date.getDay() + 6) % 7;
 }
@@ -71,10 +80,51 @@ function loadValues(
   for (let i = last_week_len + 1; i < 7; ++i)
     new_values[i]![total_weeks]! = NaN;
 
-  return new_values;
+  return normalize2d(new_values);
 }
 
+function generateDates(grid_params: GridParams): {
+  days: (string | null)[][];
+  months: (string | null)[];
+} {
+  const [total_weeks, _] = getPosByDate(
+    grid_params.end_ts,
+    grid_params.start_ts
+  );
+
+  let new_dates: (string | null)[][] = Array.from({ length: 7 }, () =>
+    Array.from({ length: total_weeks + 1 }, () => null)
+  );
+
+  // prettier-ignore
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  let months: (string | null)[] = Array.from(
+    { length: total_weeks + 1 },
+    () => null
+  );
+  let prev_month = null;
+
+  for (
+    let date = new Date(grid_params.start_ts);
+    date <= grid_params.end_ts;
+    date.setDate(date.getDate() + 1)
+  ) {
+    let [x, y] = getPosByDate(date, grid_params.start_ts);
+    new_dates[y]![x] = date.toDateString();
+
+    if (!y && prev_month != date.getMonth()) {
+      prev_month = date.getMonth();
+      months[x] = MONTHS[date.getMonth()]!;
+    }
+  }
+
+  return {
+    days: new_dates,
+    months: months,
+  };
+}
 let values = computed(() => loadValues(grid_data, grid_params));
+let dates = computed(() => generateDates(grid_params));
 </script>
 
 <template>
@@ -82,11 +132,11 @@ let values = computed(() => loadValues(grid_data, grid_params));
     <div class="grid">
       <div class="grid-row header">
         <Cell
-          v-for="i in (values[0]?.length ?? 0) + 1"
+          v-for="i in (dates.months.length ?? 0) + 1"
           class="cell"
           :config="cell_config"
         >
-          <template v-if="i > 1">{{ i - 2 }}</template>
+          <template v-if="i > 1">{{ dates.months[i - 2]! }}</template>
         </Cell>
       </div>
       <div v-for="(row, y) in values" class="grid-row">
@@ -95,7 +145,7 @@ let values = computed(() => loadValues(grid_data, grid_params));
           class="cell"
           v-for="(value, x) in row"
           :value="value ?? NaN"
-          :tooltip="`x=${x} y=${y}`"
+          :tooltip="dates.days[y]![x]!"
           :config="cell_config"
         ></Cell>
       </div>
