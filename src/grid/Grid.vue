@@ -80,7 +80,11 @@ function loadValues(
   for (let i = last_week_len + 1; i < 7; ++i)
     new_values[i]![total_weeks]! = NaN;
 
-  return normalize2d(new_values);
+  return normalize2d(
+    new_values,
+    grid_data?.meta.min_value,
+    grid_data?.meta.max_value
+  );
 }
 
 function generateDates(grid_params: GridParams): {
@@ -131,18 +135,13 @@ let dates = computed(() => generateDates(grid_params));
   <div class="wrapper">
     <div class="grid">
       <div class="grid-row header">
-        <Cell
-          v-for="i in (dates.months.length ?? 0) + 1"
-          class="cell"
-          :config="cell_config"
-        >
+        <Cell v-for="i in (dates.months.length ?? 0) + 1" :config="cell_config">
           <template v-if="i > 1">{{ dates.months[i - 2]! }}</template>
         </Cell>
       </div>
       <div v-for="(row, y) in values" class="grid-row">
-        <Cell class="cell" :config="cell_config">{{ "MTWTFSS"[y] }}</Cell>
+        <Cell :config="cell_config">{{ "MTWTFSS"[y] }}</Cell>
         <Cell
-          class="cell"
           v-for="(value, x) in row"
           :value="value ?? NaN"
           :tooltip="dates.days[y]![x]!"
@@ -174,12 +173,5 @@ let dates = computed(() => generateDates(grid_params));
   display: flex;
   align-items: center;
   gap: 10px;
-}
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition-property: background-color;
-  transition-duration: 1000ms;
 }
 </style>

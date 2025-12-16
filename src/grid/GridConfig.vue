@@ -24,20 +24,23 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div>
-    <VueDatePicker
-      :model-value="[grid_params.start_ts, grid_params.end_ts]"
-      @update:model-value="
-        ([start, end]) => {
-          grid_params.start_ts = start;
-          grid_params.end_ts = end;
-        }
-      "
-      :range="{ partialRange: false }"
-      :time-config="{ enableTimePicker: false }"
-    ></VueDatePicker>
+  <div class="config">
+    <div>
+      <div>Select date range:</div>
+      <VueDatePicker
+        :model-value="[grid_params.start_ts, grid_params.end_ts]"
+        @update:model-value="
+          ([start, end]) => {
+            grid_params.start_ts = start;
+            grid_params.end_ts = end;
+          }
+        "
+        :range="{ partialRange: false }"
+        :time-config="{ enableTimePicker: false }"
+      ></VueDatePicker>
+    </div>
     <div v-if="is_multiple_choice">
-      <label for="select">Select entry: </label>
+      <div>Select entry:</div>
       <select id="select" v-model="selected_entry_id">
         <option
           v-for="(entry, i) in Object.keys(grid_data!.content)"
@@ -50,4 +53,10 @@ watchEffect(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.config {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+</style>

@@ -32,4 +32,11 @@ let selectedLoader = computed(() => loaders[selectedLoaderIndex.value]);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  margin-top: 1em;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+}
+</style>

@@ -7,6 +7,7 @@ import Grid from "./grid/Grid.vue";
 import Loader from "./loader/Loader.vue";
 import Stats from "./stats/Stats.vue";
 import GridConfig from "./grid/GridConfig.vue";
+import AppConfig from "./config/AppConfig.vue";
 
 function getYearRange(): [Date, Date] {
   let now = new Date();
@@ -31,11 +32,26 @@ let grid_params = ref<GridParams>({
 <template>
   <div class="app">
     <div class="row">
-      <Loader @update:grid_data="grid_data = $event" class="area"></Loader>
-      <GridConfig :grid_data :grid_params class="area"></GridConfig>
+      <div class="area">
+        <p class="header">Loader</p>
+        <Loader @update:grid_data="grid_data = $event"></Loader>
+      </div>
+      <div class="area">
+        <p class="header">View Config</p>
+        <GridConfig :grid_data :grid_params></GridConfig>
+      </div>
     </div>
     <Grid class="area" :grid_data :grid_params></Grid>
-    <Stats class="area" :grid_data :grid_params></Stats>
+    <div class="row">
+      <div class="area">
+        <p class="header">Stats</p>
+        <Stats :grid_data :grid_params></Stats>
+      </div>
+      <div class="area">
+        <p class="header">App Config</p>
+        <AppConfig></AppConfig>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,5 +79,15 @@ let grid_params = ref<GridParams>({
   border: 2px solid #aaa;
   border-radius: 10px;
   max-width: fit-content;
+}
+
+.header {
+  text-align: center;
+  font-weight: bolder;
+  font-size: large;
+  margin-top: -0.4em;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.4em;
+  border-bottom: 1px solid #aaa;
 }
 </style>

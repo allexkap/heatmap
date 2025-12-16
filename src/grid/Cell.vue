@@ -36,4 +36,12 @@ function getColor() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: background-color;
+  transition-duration: 200ms;
+}
+</style>
